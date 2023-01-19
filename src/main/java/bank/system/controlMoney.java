@@ -16,7 +16,8 @@ public class controlMoney implements bank {
     Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
     Statement statement = connection.createStatement();
 
-    public controlMoney() throws SQLException {}
+    public controlMoney() throws SQLException {
+    }
 
     @Override
     public void sendMoney() throws Exception {
@@ -33,7 +34,7 @@ public class controlMoney implements bank {
         String sqlQueryToSearchByLogin = "select * from client where  login ='" + login + "'";
 
         ResultSet resultSet = statement.executeQuery(sqlQueryToSearchByLogin);
-        if (!resultSet.next()) {
+        if (!resultSet.next() || !resultSet.getString("name").equals(name)) {
             System.out.println("Invalid name or login");
             return;
         }
@@ -66,7 +67,6 @@ public class controlMoney implements bank {
 
         ResultSet resultSetForGetCurrentAccount = preparedStatementUpdateMoney.executeQuery();
         ResultSet resultSetSqlQuery = preparedStatementSqlQuery.executeQuery();
-
 
 
         int sum = 0;
@@ -105,10 +105,7 @@ public class controlMoney implements bank {
             System.out.println("Transaction accepted");
             System.out.println("Balance after transaction: " + (balance - moneyToSend));
         }
-
-
     }
-
 
     @Override
     public void withdrawalMoney() throws SQLException {
@@ -122,12 +119,10 @@ public class controlMoney implements bank {
 
 
         String sqlQueryToSearchByLogin = "select * from client where  login ='" + login + "'";
-        ResultSet  resultSet = statement.executeQuery(sqlQueryToSearchByLogin);
+        ResultSet resultSet = statement.executeQuery(sqlQueryToSearchByLogin);
 
 
-
-
-        if (!resultSet.next()) {
+        if (!resultSet.next() || !resultSet.getString("name").equals(name)) {
             System.out.println("Invalid name or login");
             return;
         }
@@ -160,7 +155,7 @@ public class controlMoney implements bank {
                 }
             }
             int balance = resultSetForGetCurrentAccount.getInt("currentaccount");
-            if(balance < moneyToWithdrawal){
+            if (balance < moneyToWithdrawal) {
                 System.out.println("Lol not enough money");
                 return;
             }
@@ -176,12 +171,12 @@ public class controlMoney implements bank {
 
             // --------------------------> обновление счета после снятие денег <------------------------------
             PreparedStatement preparedStatementUpdateCurrent = connection.prepareStatement(updateCurrent);
-            preparedStatementUpdateCurrent.setInt(1,balance - moneyToWithdrawal);
+            preparedStatementUpdateCurrent.setInt(1, balance - moneyToWithdrawal);
             preparedStatementUpdateCurrent.executeUpdate();
 
             //---------------------------> обновление счетчика <----------------------------------------------
             PreparedStatement preparedStatementUpdateWithdrawal = connection.prepareStatement(updateWithdrawal);
-            preparedStatementUpdateWithdrawal.setInt(1,moneyToWithdrawal + withdrawal);
+            preparedStatementUpdateWithdrawal.setInt(1, moneyToWithdrawal + withdrawal);
             preparedStatementUpdateWithdrawal.executeUpdate();
 
 
@@ -207,7 +202,7 @@ public class controlMoney implements bank {
 
         ResultSet resultSet = statement.executeQuery(sql);
 
-        if(!resultSet.next()) {
+        if (!resultSet.next()) {
             System.out.println("Incorrect name or password");
             return;
         }
@@ -216,31 +211,36 @@ public class controlMoney implements bank {
         System.out.println("Enter sum for transaction to deposit account");
         int sum = in.nextInt();
 
-        if(resultSet.getInt("currentAccoutn") < sum){
+        if (resultSet.getInt("currentaccount") < sum) {
             System.out.println("Not enough money");
             return;
         }
 
         System.out.println("Enter 1 for confirm transaction");
-        String one = in.nextLine();
+        String one = in.next();
 
-        if(!one.equals("1")){
+        if (!one.equals("1")) {
             System.out.println("Transaction canceled");
             return;
         }
 
-        System.out.println("Successfully transaction : " + sum);
+
+        String updateDeposit = "update client set savingaccount = ? where login ='" + login + "'";
+        String updateCurrent = "update client set currentaccount = ? where login ='" + login + "'";
 
 
+        PreparedStatement upDeposit = connection.prepareStatement(updateDeposit);
+        upDeposit.setInt(1, resultSet.getInt("savingaccount") + sum);
+        upDeposit.executeUpdate();
 
 
+        PreparedStatement upCurr = connection.prepareStatement(updateCurrent);
+        upCurr.setInt(1, resultSet.getInt("currentaccount") - sum);
+        upCurr.executeUpdate();
 
+
+        System.out.println("Successfully transaction to deposit : " + sum);
     }
-
-
-
-
-
 
 
     public void printToConsole() throws SQLException {
@@ -248,8 +248,8 @@ public class controlMoney implements bank {
         String SQL_SELECT_CLIENT = "select * from client";
 
 
-        ResultSet result =  statement.executeQuery(SQL_SELECT_CLIENT);
-        while (result.next()){
+        ResultSet result = statement.executeQuery(SQL_SELECT_CLIENT);
+        while (result.next()) {
             System.out.println(result.getString("name") + " "
                     + result.getString("surname") + " "
                     + result.getInt("age") + " "
@@ -258,10 +258,8 @@ public class controlMoney implements bank {
                     + result.getInt("savingaccount") + " "
                     + result.getString("login"));
         }
-
         result.close();
     }
-
 }
 
 

@@ -21,7 +21,8 @@ public class Daneker {
         System.out.println("[3] - > cash withdrawal");
         System.out.println("[4] - > print full info about clients");
         System.out.println("[5] - > calculate profit");
-        System.out.println("[6] - > close app");
+        System.out.println("[6] - > send money to deposit");
+        System.out.println("[7] - > close app");
     }
     public void closeApp(){
         System.out.println("App closing");

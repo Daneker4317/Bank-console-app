@@ -25,7 +25,8 @@ public class Main {
                 case 3 -> daneker.cm.withdrawalMoney();
                 case 4 ->  daneker.cm.printToConsole();
                 case 5 -> daneker.calculateProfit();
-                case 6 -> daneker.closeApp();
+                case 6 -> daneker.cm.sendMoneyToDeposit();
+                case 7 -> daneker.closeApp();
                 default -> System.err.println("INCORRECT NUMBER");
             }
         }
