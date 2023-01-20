@@ -5,19 +5,14 @@ import java.util.Scanner;
 
 public class controlMoney implements bank {
 
-    private static final String DB_USERNAME = "postgres";
-    private static final String DB_PASSWORD = "qwerty";
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
-
     private final int limitForTransaction = 1000000; // лимит переводов
     private final int limitForWithdrawal = 300000; // лимит снятие наличных
 
     Scanner in = new Scanner(System.in);
-    Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres","qwerty");
     Statement statement = connection.createStatement();
 
-    public controlMoney() throws SQLException {
-    }
+    public controlMoney() throws SQLException {}
 
     @Override
     public void sendMoney() throws Exception {
@@ -31,9 +26,7 @@ public class controlMoney implements bank {
         String login = in.nextLine();
 
 
-        String sqlQueryToSearchByLogin = "select * from client where  login ='" + login + "'";
-
-        ResultSet resultSet = statement.executeQuery(sqlQueryToSearchByLogin);
+        ResultSet resultSet = statement.executeQuery( "select * from client where  login ='" + login + "'");
         if (!resultSet.next() || !resultSet.getString("name").equals(name)) {
             System.out.println("Invalid name or login");
             return;
@@ -48,8 +41,7 @@ public class controlMoney implements bank {
         int moneyToSend = in.nextInt();
 
         System.out.println("Enter 1 for confirm transaction or any symbol to cancel transaction");
-        String confirm = in.nextLine();
-        confirm = in.nextLine();
+        String confirm = in.next();
 
         if (!confirm.equals("1")) {
             System.out.println("Transaction cancelled");
@@ -57,12 +49,8 @@ public class controlMoney implements bank {
         }
 
 
-        String updateMoney = "select currentaccount from client where  login ='" + login + "'";
-        String sqlQuery = "select summa from client where  login ='" + login + "'";
-
-
-        PreparedStatement preparedStatementUpdateMoney = connection.prepareStatement(updateMoney);
-        PreparedStatement preparedStatementSqlQuery = connection.prepareStatement(sqlQuery);
+        PreparedStatement preparedStatementUpdateMoney = connection.prepareStatement("select currentaccount from client where  login ='" + login + "'");
+        PreparedStatement preparedStatementSqlQuery = connection.prepareStatement("select summa from client where  login ='" + login + "'");
 
 
         ResultSet resultSetForGetCurrentAccount = preparedStatementUpdateMoney.executeQuery();
@@ -84,20 +72,18 @@ public class controlMoney implements bank {
                 System.out.println("Lol not enough money");
                 return;
             }
-            String updateCurrent = "update client set currentaccount = ? where login ='" + login + "'";
-            String updateSum = "update client set summa = ? where login ='" + login + "'";
 
             resultSetForGetCurrentAccount.close();
             resultSet.close();
             resultSetSqlQuery.close();
 
             // --------------------------->   обновление счета   <-----------------------------
-            PreparedStatement preparedStatementUpdateCurrent = connection.prepareStatement(updateCurrent);
+            PreparedStatement preparedStatementUpdateCurrent = connection.prepareStatement("update client set currentaccount = ? where login ='" + login + "'");
             preparedStatementUpdateCurrent.setInt(1, balance - moneyToSend);
             preparedStatementUpdateCurrent.executeUpdate();
 
             // ---------------------------> обновление счетчика  <------------------------------
-            PreparedStatement preparedStatementUpdateSum = connection.prepareStatement(updateSum);
+            PreparedStatement preparedStatementUpdateSum = connection.prepareStatement("update client set summa = ? where login ='" + login + "'");
             preparedStatementUpdateSum.setInt(1, sum + moneyToSend);
             preparedStatementUpdateSum.executeUpdate();
 
@@ -118,8 +104,8 @@ public class controlMoney implements bank {
         String login = in.nextLine();
 
 
-        String sqlQueryToSearchByLogin = "select * from client where  login ='" + login + "'";
-        ResultSet resultSet = statement.executeQuery(sqlQueryToSearchByLogin);
+        ResultSet resultSet = statement.executeQuery("select * from client where  login ='" + login + "'");
+
 
 
         if (!resultSet.next() || !resultSet.getString("name").equals(name)) {
@@ -132,12 +118,10 @@ public class controlMoney implements bank {
         int moneyToWithdrawal = in.nextInt();
 
 
-        String withdrawalMoney = "select currentaccount from client where  login ='" + login + "'";
-        String sqlQuery = "select withdrawal from client where  login ='" + login + "'";
 
 
-        PreparedStatement preparedStatementUpdateMoney = connection.prepareStatement(withdrawalMoney);
-        PreparedStatement preparedStatementSqlQuery = connection.prepareStatement(sqlQuery);
+        PreparedStatement preparedStatementUpdateMoney = connection.prepareStatement("select currentaccount from client where  login ='" + login + "'");
+        PreparedStatement preparedStatementSqlQuery = connection.prepareStatement("select withdrawal from client where  login ='" + login + "'");
 
 
         ResultSet resultSetForGetCurrentAccount = preparedStatementUpdateMoney.executeQuery();
@@ -166,16 +150,13 @@ public class controlMoney implements bank {
             resultSetForGetCurrentAccount.close();
 
 
-            String updateCurrent = "update client set currentaccount = ? where login ='" + login + "'";
-            String updateWithdrawal = "update client set withdrawal = ? where login  ='" + login + "'";
-
             // --------------------------> обновление счета после снятие денег <------------------------------
-            PreparedStatement preparedStatementUpdateCurrent = connection.prepareStatement(updateCurrent);
+            PreparedStatement preparedStatementUpdateCurrent = connection.prepareStatement("update client set currentaccount = ? where login ='" + login + "'");
             preparedStatementUpdateCurrent.setInt(1, balance - moneyToWithdrawal);
             preparedStatementUpdateCurrent.executeUpdate();
 
             //---------------------------> обновление счетчика <----------------------------------------------
-            PreparedStatement preparedStatementUpdateWithdrawal = connection.prepareStatement(updateWithdrawal);
+            PreparedStatement preparedStatementUpdateWithdrawal = connection.prepareStatement( "update client set withdrawal = ? where login  ='" + login + "'");
             preparedStatementUpdateWithdrawal.setInt(1, moneyToWithdrawal + withdrawal);
             preparedStatementUpdateWithdrawal.executeUpdate();
 
@@ -197,10 +178,7 @@ public class controlMoney implements bank {
         System.out.println("Enter login for entrance");
         String login = in.nextLine();
 
-
-        String sql = "select * from client where  login ='" + login + "'";
-
-        ResultSet resultSet = statement.executeQuery(sql);
+        ResultSet resultSet = statement.executeQuery( "select * from client where  login ='" + login + "'");
 
         if (!resultSet.next()) {
             System.out.println("Incorrect name or password");
@@ -225,16 +203,12 @@ public class controlMoney implements bank {
         }
 
 
-        String updateDeposit = "update client set savingaccount = ? where login ='" + login + "'";
-        String updateCurrent = "update client set currentaccount = ? where login ='" + login + "'";
-
-
-        PreparedStatement upDeposit = connection.prepareStatement(updateDeposit);
+        PreparedStatement upDeposit = connection.prepareStatement("update client set savingaccount = ? where login ='" + login + "'");
         upDeposit.setInt(1, resultSet.getInt("savingaccount") + sum);
         upDeposit.executeUpdate();
 
 
-        PreparedStatement upCurr = connection.prepareStatement(updateCurrent);
+        PreparedStatement upCurr = connection.prepareStatement("update client set currentaccount = ? where login ='" + login + "'");
         upCurr.setInt(1, resultSet.getInt("currentaccount") - sum);
         upCurr.executeUpdate();
 
@@ -245,10 +219,7 @@ public class controlMoney implements bank {
 
     public void printToConsole() throws SQLException {
 
-        String SQL_SELECT_CLIENT = "select * from client";
-
-
-        ResultSet result = statement.executeQuery(SQL_SELECT_CLIENT);
+        ResultSet result = statement.executeQuery("select * from client");
         while (result.next()) {
             System.out.println(result.getString("name") + " "
                     + result.getString("surname") + " "
@@ -258,7 +229,9 @@ public class controlMoney implements bank {
                     + result.getInt("savingaccount") + " "
                     + result.getString("login"));
         }
+
         result.close();
+
     }
 }
 
