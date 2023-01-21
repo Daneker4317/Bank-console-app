@@ -38,6 +38,19 @@ public class controlMoney implements bank {
 
         ResultSet checkNum = statement.executeQuery("select * from client where phone='" + phone + "'");
 
+        if(!checkNum.next()){
+            System.out.println("incorrect phone");
+            return;
+        }
+        int getterSum = checkNum.getInt("currentaccount");
+
+        System.out.println( "Getter user name: "+checkNum.getString("name") + "?" + "\n" + "enter 1 for confirm");
+        String con = in.nextLine();
+        if(!con.equals("1")){
+            System.out.println("transaction cancelled");
+            return;
+        }
+
         System.out.println("You can send not more 1 million every 5 minutes");
         System.out.println("Enter sum of transaction");
         int moneyToSend = in.nextInt();
@@ -49,7 +62,6 @@ public class controlMoney implements bank {
             System.out.println("Transaction cancelled");
             return;
         }
-
 
         PreparedStatement preparedStatementUpdateMoney = connection.prepareStatement("select currentaccount from client where  login ='" + login + "'");
         PreparedStatement preparedStatementSqlQuery = connection.prepareStatement("select summa from client where  login ='" + login + "'");
@@ -89,6 +101,10 @@ public class controlMoney implements bank {
             preparedStatementUpdateSum.setInt(1, sum + moneyToSend);
             preparedStatementUpdateSum.executeUpdate();
 
+            //----------------------------> обновление счета получачтеля <----------------------
+            PreparedStatement preparedStatementUpdateToMoney = connection.prepareStatement("update client set currentaccount = ?  where phone='" + phone + "'");
+            preparedStatementUpdateToMoney.setInt(1 , moneyToSend + getterSum );
+            preparedStatementUpdateToMoney.executeUpdate();
 
             System.out.println("Transaction accepted");
             System.out.println("Balance after transaction: " + (balance - moneyToSend));
