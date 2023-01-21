@@ -29,8 +29,9 @@ public class registerClientToDataBase {
         int gen = in.nextInt();
         String gender = (gen==1)?"Male":"Female";
         System.out.println("Enter login (be carefully you will use it for entrance)");
-        String login = in.nextLine();
-        login = in.nextLine();
+        String login = in.next();
+        System.out.println("enter clients phone");
+        String phone = in.next();
         System.out.println("Enter sum in currentAccount");
         int currentAccount = in.nextInt();
         System.out.println("Enter sum an initial fee"); // первоначальный взнос
@@ -41,7 +42,7 @@ public class registerClientToDataBase {
 
 
 
-        String sql = "insert into client(name, surName, age, gender, login, currentAccount, savingAccount) values (? , ? , ? , ? , ? , ? , ?)";
+        String sql = "insert into client(name, surName, age, gender, login, currentAccount, savingAccount , phone) values (? , ? , ? , ? , ? , ? , ? , ?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -52,7 +53,7 @@ public class registerClientToDataBase {
         preparedStatement.setString(5,login);
         preparedStatement.setInt(6,currentAccount);
         preparedStatement.setInt(7,savingAccount);
-
+        preparedStatement.setString(8,phone);
 
         preparedStatement.executeUpdate();
 

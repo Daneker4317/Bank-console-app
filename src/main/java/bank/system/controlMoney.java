@@ -36,6 +36,8 @@ public class controlMoney implements bank {
         System.out.println("Enter phone to send money ");
         String phone = in.nextLine();
 
+        ResultSet checkNum = statement.executeQuery("select * from client where phone='" + phone + "'");
+
         System.out.println("You can send not more 1 million every 5 minutes");
         System.out.println("Enter sum of transaction");
         int moneyToSend = in.nextInt();
@@ -220,6 +222,7 @@ public class controlMoney implements bank {
     public void printToConsole() throws SQLException {
 
         ResultSet result = statement.executeQuery("select * from client");
+
         while (result.next()) {
             System.out.println(result.getString("name") + " "
                     + result.getString("surname") + " "
@@ -233,6 +236,7 @@ public class controlMoney implements bank {
         result.close();
 
     }
+
 }
 
 
