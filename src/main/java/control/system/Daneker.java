@@ -5,37 +5,68 @@ import bank.system.registerEmployee;
 import user.Employee;
 import java.sql.*;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
-public class Daneker {
-    Scanner in = new Scanner (System.in);
-    controlMoney cm = new controlMoney();
-    registerEmployee registerEmployee = new registerEmployee();
+public class Daneker  {
+     private Scanner in = new Scanner (System.in);
+    private controlMoney cm = new controlMoney();
+    private registerEmployee registerEmployee = new registerEmployee();
+    private Consumer<Object> out = i -> System.out.println(i);
 
     public Daneker() throws SQLException {}
 
     public void welcome() {
-        System.out.println("Welcome to bank system");
-        System.out.println("Firstly you have to add employee");
-        System.out.println("[1] - > to add client");
-        System.out.println("[2] - > send money by nomer");
-        System.out.println("[3] - > cash withdrawal");
-        System.out.println("[4] - > print full info about clients");
-        System.out.println("[5] - > calculate profit");
-        System.out.println("[6] - > send money to deposit");
-        System.out.println("[7] - > close app");
+        out.accept("Welcome to bank system");
+        out.accept("Firstly you have to add employee");
+        out.accept("[1] - > to add client");
+        out.accept("[2] - > manipulate with money");
+        out.accept("[3] - > close app");
     }
     public void closeApp(){
-        System.out.println("App closing");
+        out.accept("App closing");
         System.exit(0);
     }
 
-    public void calculateProfit(){
-        System.out.println("Enter the amount of the monthly installment");
+    private void calculateProfit(){
+        out.accept("Enter the amount of the monthly installment");
         int sum = in.nextInt();
-        System.out.println("Enter quantity");
+        out.accept("Enter quantity");
         int quantity = in.nextInt();
-        System.out.println("expected profit after " + quantity + " about"
+        out.accept("expected profit after " + quantity + " about"
                 + 1.11 * sum  *quantity + "--" + sum * 1.18 * quantity);
+    }
+    public void sendMoney() throws Exception {
+        cm.sendMoney();
+    }
+
+    public void cashWithdrawal() throws SQLException {
+        cm.withdrawalMoney();
+    }
+    public void sendMoneyToDeposit() throws SQLException {
+        cm.sendMoneyToDeposit();
+    }
+    public void manipulateWithMoney() throws Exception {
+        manipulateWithMoneyInfo();
+        while(true){
+            out.accept("enter command number");
+            int n = in.nextInt();
+            switch (n){
+                case 1 -> sendMoney();
+                case 2 -> cashWithdrawal();
+                case 3 -> sendMoneyToDeposit();
+                case 4 -> calculateProfit();
+                case 5 -> {welcome();return;}
+                default -> out.accept("invalid number");
+            }
+        }
+    }
+
+    private void manipulateWithMoneyInfo(){
+        out.accept("[1] -> send money be nomer");
+        out.accept("[2] -> cash withdrawal");
+        out.accept("[3] -> send money to deposit");
+        out.accept("[4] -> calculate profit");
+        out.accept("[5] -> main page");
     }
 
 }
