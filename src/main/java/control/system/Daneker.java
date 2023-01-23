@@ -15,16 +15,22 @@ public class Daneker  {
 
     public Daneker() throws SQLException {}
 
-    public void welcome() {
+    public void welcome() throws Exception {
         out.accept("Welcome to bank system");
         out.accept("Firstly you have to add employee");
         out.accept("[1] - > to add client");
         out.accept("[2] - > manipulate with money");
-        out.accept("[3] - > close app");
+        out.accept("[3] - > print all clients to console");
+        out.accept("[4] - > close app");
+        registerEmployee.add();
     }
     public void closeApp(){
         out.accept("App closing");
         System.exit(0);
+    }
+
+    public void printAllClients() throws SQLException {
+        cm.printToConsole();
     }
 
     private void calculateProfit(){

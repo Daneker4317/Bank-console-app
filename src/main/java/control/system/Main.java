@@ -14,7 +14,8 @@ public class Main {
             switch (number){
                  case 1 -> Employee.registerClient();
                  case 2 -> daneker.manipulateWithMoney();
-                 case 3 -> daneker.closeApp();
+                 case 3 -> daneker.printAllClients();
+                 case 4 -> daneker.closeApp();
                  default -> System.err.println("INCORRECT NUMBER");
             }
         }

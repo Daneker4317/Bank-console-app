@@ -5,8 +5,8 @@ import user.Human;
 
 public class Client extends Human {
     private final String login;
-    private double currentAccount; // для расходов
-    private double savingAccount; //  депозит
+    private double currentAccount;
+    private double savingAccount;
 
 
     public Client(String name, String surName, int age, Gender gender , String login , double currentAccount , double savingAccount) {
