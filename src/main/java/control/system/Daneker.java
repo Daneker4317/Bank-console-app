@@ -41,8 +41,8 @@ public class Daneker  {
         out.accept("expected profit after " + quantity + " about"
                 + 1.11 * sum  *quantity + "--" + sum * 1.18 * quantity);
     }
-    public void sendMoney() throws Exception {
-        cm.sendMoney();
+    public void sendMoney(int userId) throws Exception {
+        cm.sendMoney(userId);
     }
 
     public void cashWithdrawal() throws SQLException {
@@ -52,12 +52,17 @@ public class Daneker  {
         cm.sendMoneyToDeposit();
     }
     public void manipulateWithMoney() throws Exception {
+        System.out.println("firstly you have to entered to system with name and login");
+        int userId = cm.findClient();
+        if(userId < 0){
+            return;
+        }
         manipulateWithMoneyInfo();
         while(true){
             out.accept("enter command number");
             int n = in.nextInt();
             switch (n){
-                case 1 -> sendMoney();
+                case 1 -> sendMoney(userId);
                 case 2 -> cashWithdrawal();
                 case 3 -> sendMoneyToDeposit();
                 case 4 -> calculateProfit();

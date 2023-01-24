@@ -16,7 +16,7 @@ public class controlMoney implements bank {
     }
 
 
-    private int findClient() throws SQLException {
+    public int findClient() throws SQLException {
 
         System.out.println("enter user name");
         String name = in.nextLine();
@@ -37,14 +37,7 @@ public class controlMoney implements bank {
     }
 
     @Override
-    public void sendMoney() throws Exception {
-
-
-        int userId = findClient();
-        if (userId < 0) {
-            return;
-        }
-
+    public void sendMoney(int userId) throws Exception {
 
         System.out.println("Enter phone to send money ");
         String phone = in.nextLine();
