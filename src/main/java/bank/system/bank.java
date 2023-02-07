@@ -4,6 +4,6 @@ import java.sql.SQLException;
 
 public interface bank {
     void sendMoney(int userId) throws Exception;
-    void withdrawalMoney() throws SQLException;
-    void sendMoneyToDeposit() throws SQLException;
+    void withdrawalMoney(int userId) throws SQLException;
+    void sendMoneyToDeposit(int userId) throws SQLException;
 }

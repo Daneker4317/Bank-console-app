@@ -1,6 +1,6 @@
 package user;
 
-import bank.system.registerClientToDataBase;
+import DAO.registerClientToDataBase;
 
 public class Employee extends Human {
     private double salary;

@@ -1,4 +1,4 @@
-package bank.system;
+package DAO;
 
 import user.Employee;
 import user.Gender;
@@ -46,12 +46,11 @@ public class registerEmployee {
         String sql = "insert into employee (name, surname, age, gender, salary) values (? , ? , ? ,? ,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-        preparedStatement.setString(1,name);
-        preparedStatement.setString(2,surName);
-        preparedStatement.setInt(3,age);
-        preparedStatement.setString(4,gender);
-        preparedStatement.setInt(5,salary);
-
+        preparedStatement.setString(1, name);
+        preparedStatement.setString(2, surName);
+        preparedStatement.setInt(3, age);
+        preparedStatement.setString(4, gender);
+        preparedStatement.setInt(5, salary);
 
 
         preparedStatement.executeUpdate();
