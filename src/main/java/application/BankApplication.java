@@ -9,6 +9,10 @@ import util.SingletonScanner;
 
 import java.util.function.Consumer;
 
+/**
+ @author Kaliaskaruly Daneker
+  * */
+
 public class BankApplication implements App, SingletonScanner {
 
     private final Connect connect;

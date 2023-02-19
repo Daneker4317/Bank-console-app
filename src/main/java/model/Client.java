@@ -2,6 +2,10 @@ package model;
 
 import util.Builder;
 
+/**
+ @author Kaliaskaruly Daneker
+  * */
+
 public class Client extends Human {
     private final String login;
     private double currentAccount;

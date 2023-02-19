@@ -10,6 +10,9 @@ import util.SingletonScanner;
 import java.sql.*;
 import java.util.function.Consumer;
 
+/**
+  @author Kaliaskaruly Daneker
+* */
 public class BankController implements bank, SingletonScanner {
 
     private final int limitForTransaction = 1000000; // fixed limit for transactions

@@ -10,6 +10,10 @@ import util.SingletonScanner;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+/**
+ @author Kaliaskaruly Daneker
+  * */
+
 public class RegisterController implements SingletonScanner { // - Single Responsibility Principle -> class which has only one function -> register entities to database
 
     private final Connect connect;

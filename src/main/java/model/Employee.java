@@ -3,6 +3,10 @@ package model;
 import database.Connect;
 import util.Builder;
 
+
+/**
+ @author Kaliaskaruly Daneker
+  * */
 public class Employee extends Human {
     private double salary;
     private final Connect connect;

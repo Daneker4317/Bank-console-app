@@ -1,5 +1,9 @@
 package util;
 
+/**
+ @author Kaliaskaruly Daneker
+  * */
+
 import model.Gender;
 // Interface Segregation -> divide large interfaces to smaller interfaces grouping by relevant functions
 public interface BuilderPattern { // Builder design pattern

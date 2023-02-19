@@ -2,6 +2,10 @@ package util;
 
 import model.Gender;
 
+
+/**
+ @author Kaliaskaruly Daneker
+  * */
 public class Builder implements BuilderPattern{ // Dependency inversion -> Abstractions should not depend on details. Details should depend on abstractions.
 
     private String name;

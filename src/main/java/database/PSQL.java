@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ @author Kaliaskaruly Daneker
+  * */
+
 public class PSQL implements Connect {
     private final String USERNAME = "postgres";
     private final String PASSWORD = "qwerty";
