@@ -5,7 +5,7 @@ package model;
  @author Kaliaskaruly Daneker
   * */
 
-public abstract class Human { // parent abstract class
+public abstract class Human {// parent abstract class  DJ
     private String name;
     private String surName;
     private int age;

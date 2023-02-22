@@ -28,11 +28,11 @@ public class BankController implements bank, SingletonScanner {
     public int findClient() throws Exception {
 
         System.out.println("enter user name");
-        String name = in.nextLine();
+        String name = in.next();
 
 
         System.out.println("enter login to entrance");
-        String login = in.nextLine();
+        String login = in.next();
 
         Connection conn = connection.getConnection();
         Statement statement = conn.createStatement();
@@ -48,10 +48,6 @@ public class BankController implements bank, SingletonScanner {
         }
 
 
-        resultSet.close();
-        statement.close();
-        conn.close();
-
         return id;
 
     }
@@ -63,7 +59,7 @@ public class BankController implements bank, SingletonScanner {
         Statement statement = conn.createStatement();
 
         System.out.println("Enter phone to send money ");
-        String phone = in.nextLine();
+        String phone = in.next();
 
         ResultSet checkNum = statement.executeQuery("select * from client where phone='" + phone + "'");
 
@@ -76,7 +72,7 @@ public class BankController implements bank, SingletonScanner {
         int getterSum = checkNum.getInt("currentaccount");
 
         System.out.println("Getter user name: " + checkNum.getString("name") + "?" + "\n" + "enter 1 for confirm");
-        String confirmUserName = in.nextLine();
+        String confirmUserName = in.next();
         if (!confirmUserName.equals("1")) {
             System.out.println("transaction cancelled");
             return;
@@ -188,11 +184,15 @@ public class BankController implements bank, SingletonScanner {
     @Override
     public void sendMoneyToDeposit(int userId) throws Exception {
 
-        Connection conn = connection.getConnection();
 
-        ResultSet resultSet = certainClient(userId);
+        Connection conn = connection.getConnection();
+        //ResultSet resultSet = certainClient(userId);
+        Statement statement = conn.createStatement();
+        ResultSet resultSet= statement.executeQuery("select  * from client where id = " + userId);
+
         int curr = 0;
         int save = 0;
+
         if(resultSet.next()){
             curr = resultSet.getInt("currentaccount");
             save = resultSet.getInt("savingaccount");
@@ -229,16 +229,6 @@ public class BankController implements bank, SingletonScanner {
     }
 
 
-    public ResultSet certainClient(int id) throws Exception {
-        Connection conn = connection.getConnection();
-        Statement statement = conn.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from client where id=" + id);
-
-        statement.close();
-        conn.close();
-
-        return resultSet;
-    }
 
     public void printToConsole() throws Exception {
         Connection conn = connection.getConnection();

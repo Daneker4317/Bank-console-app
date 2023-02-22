@@ -4,7 +4,7 @@ import database.PSQL;
 
 /**
  @author Kaliaskaruly Daneker
-  * */
+   */
 public class Main {
 
     public static void main(String[] args) throws Exception {

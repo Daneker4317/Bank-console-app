@@ -16,7 +16,7 @@ public class Builder implements BuilderPattern{ // Dependency inversion -> Abstr
     private String login;
     private double currentAccount;
     private double savingAccount;
-
+    
     public Builder() {}
 
     @Override
